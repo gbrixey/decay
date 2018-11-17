@@ -5,11 +5,11 @@ import os
 import sqlite3
 from werkzeug.utils import secure_filename
 
-DATABASE = 'data.db'
 MAX_FILES = 20
-UPLOAD_FOLDER = 'static/images'
 
 app = Flask(__name__)
+DATABASE = os.path.join(app.root_path, 'data.db')
+UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'images')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def ensure_upload_directory():
@@ -37,9 +37,9 @@ def degrade_database():
         id = item['id']
         description = item['description']
         old_filename = item['filename']
-        old_image_path = UPLOAD_FOLDER + '/' + old_filename
+        old_image_path = os.path.join(UPLOAD_FOLDER, old_filename)
         new_filename = old_filename[:-13] + '_' + small_uuid() + '.jpg'
-        new_image_path = UPLOAD_FOLDER + '/' + new_filename
+        new_image_path = os.path.join(UPLOAD_FOLDER, new_filename)
         degrade_jpeg(old_image_path, new_image_path)
         os.remove(old_image_path)
         new_description = degrade_text(description)
@@ -55,11 +55,10 @@ def degrade_database():
 
 def trim_database_if_necessary():
     """Ensures that the database does not contain more than the maximum number of images."""
-    maximum_number_of_images = 10
     sql_fetch = '''select id from items order by id desc'''
     items = g.db.cursor().execute(sql_fetch).fetchall()
     for (index, item) in enumerate(items):
-        if index >= maximum_number_of_images:
+        if index >= MAX_FILES:
             id = items['id']
             sql_delete = '''delete from items where id = ?'''
             g.db.cursor().execute(sql_delete, (id,))
