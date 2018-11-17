@@ -109,7 +109,8 @@ def submit_image():
     trim_database_if_necessary()
     return redirect('/')
     
+ensure_upload_directory()
+ensure_items_table()
+
 if __name__ == '__main__':
-    ensure_upload_directory()
-    ensure_items_table()
     app.run(debug = True)
