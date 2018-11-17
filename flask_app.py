@@ -1,6 +1,6 @@
 from flask import Flask, flash, g, redirect, render_template, request
 from degrade import degrade_text, degrade_jpeg
-from uuid import uuid4
+from util import is_valid_jpeg_file, small_uuid
 import os
 import sqlite3
 from werkzeug.utils import secure_filename
@@ -29,20 +29,6 @@ def ensure_items_table():
     db.cursor().execute(sql_create_table)
     db.close()
 
-def is_valid_jpeg_file(image_file):
-    """Returns True if I think the given file is a jpeg, or False otherwise.
-    This function just performs some basic checks to weed out people uploading
-    the wrong file type."""
-    # Check file extension first.
-    filename = image_file.filename
-    jpeg_extensions = set(['jpg', 'jpeg'])
-    if '.' in filename and filename.rsplit('.', 1)[1].lower() in jpeg_extensions:
-        # Then check the actual image data.
-        b = bytearray(image_file.read())
-        image_file.seek(0)
-        return b[0] == 0xFF and b[1] == 0xD8 and b[-2] == 0xFF and b[-1] == 0xD9
-    return False
-
 def degrade_database():
     """Degrades all images and text currently in the database."""
     sql_fetch = '''select * from items'''
@@ -68,8 +54,7 @@ def degrade_database():
     return
 
 def trim_database_if_necessary():
-    """This function ensures the database does not contain more than
-    the maximum number of images."""
+    """Ensures that the database does not contain more than the maximum number of images."""
     maximum_number_of_images = 10
     sql_fetch = '''select id from items order by id desc'''
     items = g.db.cursor().execute(sql_fetch).fetchall()
@@ -80,10 +65,6 @@ def trim_database_if_necessary():
             g.db.cursor().execute(sql_delete, (id,))
     g.db.commit()
     return
-
-def small_uuid():
-    """Returns the first 8 characters of a random uuid."""
-    return str(uuid4())[:8]
     
 def makedict(cursor, row):
     return dict((cursor.description[i][0], value) for i, value in enumerate(row))
