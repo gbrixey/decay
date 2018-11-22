@@ -1,6 +1,6 @@
 from flask import Flask, flash, g, redirect, render_template, request
 from degrade import degrade_text, degrade_jpeg
-from util import jpeg_image_from_file, rotate_image_if_necessary
+from util import *
 from PIL import Image
 import random
 import os
@@ -99,10 +99,12 @@ def submit_image():
     image = jpeg_image_from_file(image_file)
     if image == None:
         return redirect('/')
-    # Rotate image if necessary
+    # Rotate/resize image if necessary
     image = rotate_image_if_necessary(image)
+    image = resize_image_if_necessary(image)
     filename = random_jpeg_filename()
-    image.save(os.path.join(UPLOAD_FOLDER, filename))
+    path = os.path.join(UPLOAD_FOLDER, filename)
+    image.save(path, quality = 50, optimize = True)
     # Degrade existing images and text before inserting the new image,
     # so that the new image will start off with no glitches.
     degrade_database()

@@ -1,5 +1,7 @@
 from PIL import Image, ExifTags
 
+MAX_IMAGE_WIDTH = 1200
+
 def jpeg_image_from_file(image_file):
     """Returns a PIL image by reading from the given file.
     Returns None if the image is not a valid jpeg."""
@@ -36,5 +38,13 @@ def rotate_image_if_necessary(image):
         return image.rotate(270, expand = True)
     elif orientation == 8:
         return image.rotate(90, expand = True)
+    else:
+        return image
+
+def resize_image_if_necessary(image):
+    """Returns an image constrained to a maximum size."""
+    if image.width > MAX_IMAGE_WIDTH:
+        height = int(image.height * (MAX_IMAGE_WIDTH / image.width))
+        return image.resize((MAX_IMAGE_WIDTH, height))
     else:
         return image
