@@ -1,14 +1,6 @@
 import math
 import random
-
-def jpeg_header_length(byte_array):
-    """Finds the length of a jpeg header, given the jpeg data in byte array format"""
-    result = 417
-    for i in range(len(byte_array) - 3):
-        if byte_array[i] == 0xFF and byte_array[i + 1] == 0xDA:
-            result = i + 2
-            break
-    return result
+from util import jpeg_header_length
 
 last_seed_used = 0
     
@@ -20,8 +12,10 @@ def degrade_jpeg_byte_array(byte_array):
     max_index = len(byte_array) - header_length - 4
     iterations = int(len(byte_array) / 50000)
     seed = random.randint(0, 100)
+    global last_seed_used
     while seed == last_seed_used:
         seed = random.randint(0, 100)
+    last_seed_used = seed
     seed_percent = seed / 100
     for i in range(iterations):
         min_pixel_index = math.floor(max_index / iterations * i)

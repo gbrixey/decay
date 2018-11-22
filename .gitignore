@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 
 data.db
+todo.txt
 
 original_images/
 static/images/

@@ -95,9 +95,6 @@ div.content-row {
     display: grid;
     grid-template-columns: 60% 40%;
     grid-template-rows: 100%;
-    border-left: 1px solid black; /* Maybe remove border later? */
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
     background-position: center;
     background-size: cover;
     height: 300px;

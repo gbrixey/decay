@@ -1,9 +1,9 @@
 from flask import Flask, flash, g, redirect, render_template, request
 from degrade import degrade_text, degrade_jpeg
-from util import is_valid_jpeg_file, small_uuid
+from util import is_valid_jpeg_file
+import random
 import os
 import sqlite3
-from werkzeug.utils import secure_filename
 
 MAX_FILES = 20
 
@@ -11,6 +11,10 @@ app = Flask(__name__)
 DATABASE = os.path.join(app.root_path, 'data.db')
 UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'images')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+with open(os.path.join(app.root_path, 'words.txt')) as f:
+    global WORDS
+    WORDS = f.read().split()
 
 def ensure_upload_directory():
     """Creates the image upload directory if necessary."""
@@ -36,9 +40,8 @@ def degrade_database():
     for item in items:
         id = item['id']
         description = item['description']
-        old_filename = item['filename']
-        old_image_path = os.path.join(UPLOAD_FOLDER, old_filename)
-        new_filename = old_filename[:-13] + '_' + small_uuid() + '.jpg'
+        old_image_path = os.path.join(UPLOAD_FOLDER, item['filename'])
+        new_filename = random_jpeg_filename()
         new_image_path = os.path.join(UPLOAD_FOLDER, new_filename)
         degrade_jpeg(old_image_path, new_image_path)
         os.remove(old_image_path)
@@ -65,6 +68,10 @@ def trim_database_if_necessary():
     g.db.commit()
     return
     
+def random_jpeg_filename():
+    """Returns a jpeg filename using three randomly selected words."""
+    return '_'.join([random.choice(WORDS) for _ in range(3)]) + '.jpg'
+    
 def makedict(cursor, row):
     return dict((cursor.description[i][0], value) for i, value in enumerate(row))
     
@@ -85,15 +92,12 @@ def main_page():
     items = g.db.cursor().execute(sql_fetch).fetchall()
     return render_template('index.html', items = items)
 
-# TODO: Maybe crop new image to the desired height? (Croppie)
-# TODO: Find a way to add font data to the description
 @app.route('/submit_image', methods=['POST'])
 def submit_image():
     image_file = request.files.get('image')
     if image_file == None or not is_valid_jpeg_file(image_file):
         return redirect('/')
-    components = image_file.filename.rsplit('.', 1)
-    filename = secure_filename(components[0] + '_' + small_uuid() + '.jpg')
+    filename = random_jpeg_filename()
     image_file.save(os.path.join(UPLOAD_FOLDER, filename))
     # Degrade existing images and text before inserting the new image,
     # so that the new image will start off with no glitches.

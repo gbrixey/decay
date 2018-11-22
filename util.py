@@ -1,5 +1,3 @@
-from uuid import uuid4
-
 def is_valid_jpeg_file(image_file):
     """Returns True if the given file is a jpeg, or False otherwise.
     This function just performs some basic checks and is not guaranteed to be 100% accurate."""
@@ -13,6 +11,11 @@ def is_valid_jpeg_file(image_file):
         return b[0] == 0xFF and b[1] == 0xD8 and b[-2] == 0xFF and b[-1] == 0xD9
     return False
 
-def small_uuid():
-    """Returns the first 8 characters of a random uuid."""
-    return str(uuid4())[:8]
+def jpeg_header_length(byte_array):
+    """Finds the length of a jpeg header, given the jpeg data in byte array format"""
+    result = 417
+    for i in range(len(byte_array) - 3):
+        if byte_array[i] == 0xFF and byte_array[i + 1] == 0xDA:
+            result = i + 2
+            break
+    return result
