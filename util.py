@@ -29,7 +29,7 @@ def rotate_image_if_necessary(image):
     for k, v in ExifTags.TAGS.items():
         if v == 'Orientation':
             exif = image._getexif()
-            if k in exif:
+            if exif != None and k in exif:
                 orientation = exif[k]
             break
     if orientation == 3:
