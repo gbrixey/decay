@@ -102,6 +102,7 @@ def submit_image():
     # Rotate/resize image if necessary
     image = rotate_image_if_necessary(image)
     image = resize_image_if_necessary(image)
+    image = crop_image_if_necessary(image)
     filename = random_jpeg_filename()
     path = os.path.join(UPLOAD_FOLDER, filename)
     image.save(path, quality = 50, optimize = True)

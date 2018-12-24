@@ -174,8 +174,8 @@ p.description {
     
     div.intro-container {
         grid-template-columns: 100%;
-        grid-template-rows: 55% 45%;
-        height: 63vw;
+        grid-template-rows: 60% 40%;
+        height: 80vw;
     }
     
     h1.intro-title {
@@ -186,15 +186,15 @@ p.description {
     }
     
     p.intro-subtitle {
-        font-size: 2vw;
+        font-size: 2.5vw;
         top: -5vw;
-        left: 75vw;
-        width: 16vw;
+        left: 74vw;
+        width: 20vw;
     }
     
     p.intro-text {
-        font-size: 2vw;
-        top: -2vw;
+        font-size: 2.5vw;
+        top: 0vw;
         left: 10vw;
         width: 80vw;
     }
@@ -204,7 +204,7 @@ p.description {
     }
     
     textarea.description {
-        font-size: 16pt;
+        font-size: calc(16px + 1vw);
         padding: 1vw;
         margin: 3vw 4vw 3vw 4vw;
         height: 12vw;
@@ -217,17 +217,17 @@ p.description {
     }
     
     label.image-form {
-        font-size: 2.5vw;
+        font-size: 3vw;
         letter-spacing: 0.5vw;
-        padding: 1vw 2vw 1vw 2vw;
+        padding: 2vw;
         width: 40vw;
     }
     
     label.image-form:before {
-        top: 0.4vw;
-        left: 0.4vw;
-        right: 0.4vw;
-        bottom: 0.4vw;
+        top: 0.5vw;
+        left: 0.5vw;
+        right: 0.5vw;
+        bottom: 0.5vw;
     }
     
     div.content-row {
@@ -235,13 +235,13 @@ p.description {
     }
     
     div.row-description-container {
-        margin: 3vw 4vw auto 4vw;
+        margin: 3vw 4vw auto 0vw;
         padding: 2vw;
         max-height: 23vw;
     }
     
     p.description {
-        font-size: 2vw;
+        font-size: 2.5vw;
         max-height: 23vw;
     }
 }
@@ -306,7 +306,7 @@ p.description {
         letter-spacing: 2px;
         padding: 10px 20px 10px 20px;
         margin-bottom: 30px;
-        width: 130px;
+        width: 150px;
     }
     
     label.image-form:before {

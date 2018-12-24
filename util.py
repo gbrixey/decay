@@ -48,3 +48,24 @@ def resize_image_if_necessary(image):
         return image.resize((MAX_IMAGE_WIDTH, height))
     else:
         return image
+
+def crop_image_if_necessary(image):
+    """Crops the image to a 3:1 aspect ratio"""
+    aspect_ratio = image.width / image.height
+    if aspect_ratio > 3:
+        # Image is too wide (e.g. a panorama)
+        desired_width = image.height * 3
+        left = (image.width - desired_width) / 2
+        right = left + desired_width
+        bottom = image.height
+        return image.crop((left, 0, right, bottom))
+    elif aspect_ratio < 3:
+        desired_height = image.width / 3
+        top = (image.height - desired_height) / 2
+        bottom = top + desired_height
+        right = image.width
+        return image.crop((0, top, right, bottom))
+    else:
+        # Aspect ratio is already exactly right?? Great!
+        return image
+        
