@@ -204,7 +204,7 @@ p.description {
     }
     
     textarea.description {
-        font-size: calc(16px + 1vw);
+        font-size: calc(16px + 2vw);
         padding: 1vw;
         margin: 3vw 4vw 3vw 4vw;
         height: 12vw;
