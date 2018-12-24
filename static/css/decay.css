@@ -10,10 +10,6 @@ div.container {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    margin: 0 auto 0 auto;
-    max-width: 1200px;
-    min-width: 600px;
-    width: 100%;
 }
 
 div.intro-container {
@@ -21,7 +17,6 @@ div.intro-container {
     grid-template-columns: 60% 40%;
     grid-template-rows: 100%;
     background-color: black;
-    height: 300px;
 }
 
 div.intro-text-container {
@@ -31,18 +26,15 @@ h1.intro-title {
     display: inline-block;
     color: white;
     font-family: 'Source Sans Pro';
-    font-size: 36pt;
     font-weight: 300;
     letter-spacing: 3px;
     text-align: center;
     position: relative;
-    top: 70px;
-    left: calc((100% - 330px) / 2);
-    width: 330px;
     margin: 0;
 }
 
 h1.intro-title::after {
+    /* This creates a strikethrough line through the title. */
     border-bottom: 1px solid white;
     content: "";
     position: absolute;
@@ -52,18 +44,23 @@ h1.intro-title::after {
     margin-top: 5px;
 }
 
+a.intro-subtitle-link {
+    /* Remove the default link underline */
+    text-decoration: none;
+}
+
 p.intro-subtitle {
     color: white;
     font-family: 'Source Sans Pro';
-    font-size: 12pt;
+    text-align: left;
+    position: relative;
 }
 
 p.intro-text {
     color: white;
     font-family: 'Source Sans Pro';
-    font-size: 12pt;
     text-align: left;
-    margin: 40px 0px 40px 40px;
+    position: relative;
 }
 
 div.intro-form-container {
@@ -81,14 +78,59 @@ form.new-image {
 
 textarea.description {
     align-self: stretch;
+    font-family: 'Source Sans Pro';
+    /* resize: none means the user cannot resize the text field
+       using the grabber in the bottom right */
     resize: none;
-    margin: 40px 40px 30px 40px;
-    height: 110px;
+    /* The properties below override the default border and
+       blue highlighting behavior of the textarea. */
+    outline: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    border: 1px solid black;
 }
 
-input {
-    margin-left: 40px;
-    margin-bottom: 20px;
+input.image-form {
+    /* These properties hide the actual input element from view.
+       The <label> is the actual clickable element for these inputs. */
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+    height: 0.1px;
+    width: 0.1px;
+}
+
+label.image-form {
+    /* cursor: pointer means the cursor will turn into a hand
+       when the user hovers over the label. */
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    font-family: 'Source Sans Pro';
+    position: relative;
+    /* See below for an explanation of the z-index crap */
+    z-index: 2;
+    /* All this user-select crap is to make it so the user can't select 
+       the text of the label. This way it behaves more like a button. */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+label.image-form:before {
+    /* This creates a 1px border inside the label. */
+    border: 1px solid black;
+    content: "";
+    position: absolute;
+    /* z-index of the "before" pseudoelement must be lower than that of the label itself,
+       so that the label will still be clickable. But the label can't have z-index of 0
+       or else the "before" pseudoelement will not be visible.
+       So I gave the label a z-index of 2. */
+    z-index: 1;
 }
 
 div.content-row {
@@ -97,25 +139,165 @@ div.content-row {
     grid-template-rows: 100%;
     background-position: center;
     background-size: cover;
-    height: 300px;
 }
 
 div.row-description-container {
     grid-column-start: 2;
     background-color: rgba(0, 0, 0, 0.8);
-    margin: 40px 40px auto 40px;
-    padding: 20px;
-    max-height: 180px;
 }
 
 p.description {
     font-family: 'Source Sans Pro';
-    font-size: 12pt;
+    font-size: 2vw;
     color: white;
     text-align: left;
+    /* Some crap here to get the text to truncate properly
+       when the paragraph reaches its max-height. */
     overflow: hidden;
     word-break: break-word;
     word-wrap: break-word;
     margin: 0;
-    max-height: 180px;
+    max-height: 23vw;
+}
+
+/* Mobile layout */
+
+@media screen and (max-width: 1200px) {
+    
+    div.container {
+        margin: 0;
+        width: 100vw;
+    }
+    
+    div.intro-container {
+        height: 33vw;
+    }
+    
+    h1.intro-title {
+        font-size: 5vw;
+        top: 6vw;
+        left: 10vw;
+        width: 36vw;
+    }
+    
+    p.intro-subtitle {
+        font-size: 1.2vw;
+        top: 5vw;
+        left: 46vw;
+        width: 9vw;
+    }
+    
+    p.intro-text {
+        font-size: 1.2vw;
+        top: 7vw;
+        left: 20vw;
+        width: 35vw;
+    }
+    
+    textarea.description {
+        font-size: 2vw;
+        padding: 1vw;
+        margin: 3vw 4vw 2vw 4vw;
+        height: 12vw;
+    }
+    
+    label.image-form {
+        font-size: 2vw;
+        padding: 1vw 2vw 1vw 2vw;
+        margin-left: 4vw;
+        margin-bottom: 2vw;
+    }
+    
+    label.image-form:before {
+        top: 0.4vw;
+        left: 0.4vw;
+        right: 0.4vw;
+        bottom: 0.4vw;
+    }
+    
+    div.content-row {
+        height: 33vw;
+    }
+    
+    div.row-description-container {
+        margin: 3vw 4vw auto 4vw;
+        padding: 2vw;
+        max-height: 23vw;
+    }
+    
+    p.description {
+        font-size: 2vw;
+        max-height: 23vw;
+    }
+}
+
+/* Desktop layout */
+
+@media screen and (min-width: 1201px) {
+    
+    div.container {
+        margin: 0 auto 0 auto;
+        width: 1200px;
+    }
+    
+    div.intro-container {
+        height: 400px;
+    }
+    
+    h1.intro-title {
+        font-size: 40pt;
+        top: 70px;
+        left: 175px;
+        width: 370px;
+    }
+    
+    p.intro-subtitle {
+        font-size: 12pt;
+        top: 60px;
+        left: 550px;
+        width: 120px;
+    }
+
+    p.intro-text {
+        font-size: 12pt;
+        top: 80px;
+        left: 80px;
+        width: 600px;
+    }
+    
+    textarea.description {
+        font-size: 12pt;
+        padding: 5px;
+        margin: 40px;
+        height: 140px;
+    }
+
+    label.image-form {
+        font-size: 12pt;
+        padding: 10px 20px 10px 20px;
+        margin-left: 40px;
+        margin-bottom: 30px;
+    }
+    
+    label.image-form:before {
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+    }
+    
+    div.content-row {
+        height: 400px;
+    }
+    
+    div.row-description-container {
+        margin: 40px 40px auto 40px;
+        padding: 20px;
+        max-height: 280px;
+    }
+    
+    p.description {
+        font-size: 12pt;
+        max-height: 280px;
+    }
 }

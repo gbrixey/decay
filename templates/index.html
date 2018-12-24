@@ -4,19 +4,29 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="static/css/decay.css">
-    <title>decay theory</title>
+    <title>decay theory (debug)</title>
   </head>
   <body>
     <div class="container">
       <div class="intro-container">
         <div class="intro-text-container">
           <h1 class="intro-title">decay theory</h1>
+          <a href="https://designinquiry.net/projects/no-quo/" class="intro-subtitle-link">
+            <p class="intro-subtitle">
+              A 'What if' grown from the soil of <u>DesignInquiry NOQUO</u>
+            </p>
+          </a>
+          <p class="intro-text">
+            Please submit a photo along with a short description. Decay Theory allows you to participate in an exchange of narrative and experience, by which you add to the unpredictable decay and misinterpretation of previous entries. It is an act of curiosity, catharsis, and unequal exchange. What you give takes from what was given.
+          </p>
         </div>
         <div class="intro-form-container">
           <form class="new-image" action="/submit_image" method="post" enctype="multipart/form-data">
             <textarea class="description" name="description"></textarea>
-            <input type="file" name="image" accept=".jpg,.jpeg">
-            <input type="submit" value="Submit">
+            <input class="image-form" id="image-input" type="file" name="image" accept=".jpg,.jpeg">
+            <label class="image-form" for="image-input">CHOOSE FILE</label>
+            <input class="image-form" type="submit" id="image-submit" value="Submit">
+            <label class="image-form" for="image-submit">SUBMIT</label>
           </form>
         </div>
       </div>
