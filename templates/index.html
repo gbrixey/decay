@@ -11,11 +11,11 @@
       <div class="intro-container">
         <div class="intro-text-container">
           <h1 class="intro-title">decay theory</h1>
-          <a href="https://designinquiry.net/projects/no-quo/" class="intro-subtitle-link">
-            <p class="intro-subtitle">
+          <p class="intro-subtitle">
+            <a href="https://designinquiry.net/projects/no-quo/" class="intro-subtitle-link">
               A 'What if' grown from the soil of <u>DesignInquiry NOQUO</u>
-            </p>
-          </a>
+            </a>
+          </p>
           <p class="intro-text">
             Please submit a photo along with a short description. Decay Theory allows you to participate in an exchange of narrative and experience, by which you add to the unpredictable decay and misinterpretation of previous entries. It is an act of curiosity, catharsis, and unequal exchange. What you give takes from what was given.
           </p>
@@ -23,10 +23,12 @@
         <div class="intro-form-container">
           <form class="new-image" action="/submit_image" method="post" enctype="multipart/form-data">
             <textarea class="description" name="description"></textarea>
-            <input class="image-form" id="image-input" type="file" name="image" accept=".jpg,.jpeg">
-            <label class="image-form" for="image-input">CHOOSE FILE</label>
-            <input class="image-form" type="submit" id="image-submit" value="Submit">
-            <label class="image-form" for="image-submit">SUBMIT</label>
+            <div class="form-input-container">
+              <input class="image-form" id="image-input" type="file" name="image" accept=".jpg,.jpeg">
+              <label class="image-form" for="image-input">CHOOSE FILE</label>
+              <input class="image-form" type="submit" id="image-submit" value="Submit">
+              <label class="image-form" for="image-submit">SUBMIT</label>
+            </div>
           </form>
         </div>
       </div>

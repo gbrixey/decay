@@ -14,8 +14,6 @@ div.container {
 
 div.intro-container {
     display: grid;
-    grid-template-columns: 60% 40%;
-    grid-template-rows: 100%;
     background-color: black;
 }
 
@@ -45,6 +43,7 @@ h1.intro-title::after {
 }
 
 a.intro-subtitle-link {
+    color: white;
     /* Remove the default link underline */
     text-decoration: none;
 }
@@ -64,20 +63,18 @@ p.intro-text {
 }
 
 div.intro-form-container {
-    grid-column-start: 2;
 }
 
 form.new-image {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: stretch;
     height: 100%;
     width: 100%;
 }
 
 textarea.description {
-    align-self: stretch;
     font-family: 'Source Sans Pro';
     /* resize: none means the user cannot resize the text field
        using the grabber in the bottom right */
@@ -88,6 +85,10 @@ textarea.description {
     box-shadow: none;
     -webkit-box-shadow: none;
     border: 1px solid black;
+}
+
+div.form-input-container {
+    display: flex;
 }
 
 input.image-form {
@@ -108,6 +109,8 @@ label.image-form {
     background-color: white;
     color: black;
     font-family: 'Source Sans Pro';
+    font-weight: 700;
+    text-align: center;
     position: relative;
     /* See below for an explanation of the z-index crap */
     z-index: 2;
@@ -170,42 +173,54 @@ p.description {
     }
     
     div.intro-container {
-        height: 33vw;
+        grid-template-columns: 100%;
+        grid-template-rows: 55% 45%;
+        height: 63vw;
     }
     
     h1.intro-title {
-        font-size: 5vw;
+        font-size: 8vw;
         top: 6vw;
         left: 10vw;
-        width: 36vw;
+        width: 54vw;
     }
     
     p.intro-subtitle {
-        font-size: 1.2vw;
-        top: 5vw;
-        left: 46vw;
-        width: 9vw;
+        font-size: 2vw;
+        top: -5vw;
+        left: 75vw;
+        width: 16vw;
     }
     
     p.intro-text {
-        font-size: 1.2vw;
-        top: 7vw;
-        left: 20vw;
-        width: 35vw;
+        font-size: 2vw;
+        top: -2vw;
+        left: 10vw;
+        width: 80vw;
+    }
+    
+    div.intro-form-container {
+        grid-row-start: 2;
     }
     
     textarea.description {
-        font-size: 2vw;
+        font-size: 16pt;
         padding: 1vw;
-        margin: 3vw 4vw 2vw 4vw;
+        margin: 3vw 4vw 3vw 4vw;
         height: 12vw;
     }
     
-    label.image-form {
-        font-size: 2vw;
-        padding: 1vw 2vw 1vw 2vw;
+    div.form-input-container {
+        justify-content: space-between;
         margin-left: 4vw;
-        margin-bottom: 2vw;
+        margin-right: 4vw;
+    }
+    
+    label.image-form {
+        font-size: 2.5vw;
+        letter-spacing: 0.5vw;
+        padding: 1vw 2vw 1vw 2vw;
+        width: 40vw;
     }
     
     label.image-form:before {
@@ -241,6 +256,8 @@ p.description {
     }
     
     div.intro-container {
+        grid-template-columns: 60% 40%;
+        grid-template-rows: 100%;
         height: 400px;
     }
     
@@ -265,18 +282,31 @@ p.description {
         width: 600px;
     }
     
+    div.intro-form-container {
+        grid-column-start: 2;
+    }
+    
     textarea.description {
         font-size: 12pt;
         padding: 5px;
         margin: 40px;
         height: 140px;
     }
+    
+    div.form-input-container {
+        align-self: flex-start;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-left: 40px;
+    }
 
     label.image-form {
         font-size: 12pt;
+        letter-spacing: 2px;
         padding: 10px 20px 10px 20px;
-        margin-left: 40px;
         margin-bottom: 30px;
+        width: 130px;
     }
     
     label.image-form:before {
