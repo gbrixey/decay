@@ -1,6 +1,6 @@
 from PIL import Image, ExifTags
 
-MAX_IMAGE_WIDTH = 1200
+IMAGE_WIDTH = 1200
 
 def jpeg_image_from_file(image_file):
     """Returns a PIL image by reading from the given file.
@@ -42,10 +42,10 @@ def rotate_image_if_necessary(image):
         return image
 
 def resize_image_if_necessary(image):
-    """Returns an image constrained to a maximum size."""
-    if image.width > MAX_IMAGE_WIDTH:
-        height = int(image.height * (MAX_IMAGE_WIDTH / image.width))
-        return image.resize((MAX_IMAGE_WIDTH, height))
+    """Returns an image constrained to a desired size."""
+    if image.width != IMAGE_WIDTH:
+        height = int(image.height * (IMAGE_WIDTH / image.width))
+        return image.resize((IMAGE_WIDTH, height))
     else:
         return image
 
@@ -53,19 +53,20 @@ def crop_image_if_necessary(image):
     """Crops the image to a 3:1 aspect ratio"""
     aspect_ratio = image.width / image.height
     if aspect_ratio > 3:
-        # Image is too wide (e.g. a panorama)
+        # Image is wider than 3:1 (e.g. a panorama)
         desired_width = image.height * 3
         left = (image.width - desired_width) / 2
         right = left + desired_width
         bottom = image.height
         return image.crop((left, 0, right, bottom))
     elif aspect_ratio < 3:
+        # Image is narrower than 3:1
+        # Most images will fall into this category
         desired_height = image.width / 3
         top = (image.height - desired_height) / 2
         bottom = top + desired_height
         right = image.width
         return image.crop((0, top, right, bottom))
     else:
-        # Aspect ratio is already exactly right?? Great!
         return image
         

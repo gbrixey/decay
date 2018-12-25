@@ -2,6 +2,10 @@ import math
 import random
 from util import jpeg_header_length
 
+################################
+# IMAGE DEGRADING METHODS
+################################
+
 last_seed_used = 0
     
 def degrade_jpeg_byte_array(byte_array):
@@ -10,7 +14,7 @@ def degrade_jpeg_byte_array(byte_array):
     # Try not to edit the jpeg header.
     header_length = jpeg_header_length(byte_array)
     max_index = len(byte_array) - header_length - 4
-    iterations = int(len(byte_array) / 50000)
+    iterations = max(10, int(len(byte_array) / 50000))
     seed = random.randint(0, 100)
     global last_seed_used
     while seed == last_seed_used:
@@ -35,6 +39,10 @@ def degrade_jpeg(input_file, output_file):
     output_byte_array = degrade_jpeg_byte_array(input_byte_array)
     with open(output_file, 'wb') as f:
         f.write(output_byte_array)
+        
+################################
+# TEXT DEGRADING METHODS
+################################
         
 def degrade_text(text):
     """Adds several typographic errors to the given string and returns the result.
