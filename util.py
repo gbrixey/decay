@@ -29,12 +29,14 @@ def rotate_image_if_necessary(image):
     """Given a PIL image, this function returns a rotated image
     if camera orientation info can be found in the EXIF data."""
     orientation = 1
+    orientation_key = 274
     for k, v in ExifTags.TAGS.items():
         if v == 'Orientation':
-            exif = image._getexif()
-            if exif != None and k in exif:
-                orientation = exif[k]
+            orientation_key = k
             break
+    exif = image._getexif()
+    if exif != None and orientation_key in exif:
+        orientation = exif[orientation_key]
     if orientation == 3:
         return image.rotate(180, expand = True)
     elif orientation == 6:

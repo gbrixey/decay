@@ -182,19 +182,19 @@ p.description {
     }
     
     h1.intro-title {
-        font-size: 8vw;
-        top: 6vw;
+        font-size: 7vw;
+        top: 40px;
         left: 10vw;
         width: 54vw;
     }
     
     p.intro-subtitle {
-        font-size: 14px;
+        font-size: 12px;
         line-height: 20px;
         top: -5vw;
         left: 74vw;
-        width: 20vw;
-        max-width: 120px;
+        width: 26vw;
+        max-width: 110px;
     }
     
     p.intro-text {
@@ -210,10 +210,11 @@ p.description {
     }
     
     textarea.description {
-        font-size: 18px;
-        line-height: 30px;
+        font-size: 16px;
+        line-height: 24px;
         padding: 5px;
         margin: 15px 20px 15px 20px;
+        height: 58px;
     }
     
     div.form-input-container {
@@ -222,8 +223,8 @@ p.description {
     }
     
     label.image-form {
-        font-size: 16px;
-        letter-spacing: 3px;
+        font-size: 12px;
+        letter-spacing: 2px;
         padding: 15px 10px 15px 10px;
         width: calc(50vw - 50px);
     }
