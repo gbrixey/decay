@@ -1,15 +1,18 @@
+import math
+import random
 from PIL import Image, ExifTags
-
-IMAGE_WIDTH = 1200
+from constants import BLOCK_SIZE, IMAGE_WIDTH, ASPECT_RATIO
 
 def jpeg_image_from_file(image_file):
     """Returns a PIL image by reading from the given file.
     Returns None if the image is not a valid jpeg."""
     try:
         image = Image.open(image_file)
-    except:
+    except IOError as err:
+        print("Error opening image: {0}".format(err))
         return None
     if image.format != 'JPEG':
+        print("Rejecting image with format: " + image.format)
         return None
     return image
 
@@ -50,23 +53,34 @@ def resize_image_if_necessary(image):
         return image
 
 def crop_image_if_necessary(image):
-    """Crops the image to a 3:1 aspect ratio"""
+    """Crops the image until its aspect ratio is equal to ASPECT_RATIO.
+    Note that the width of the resulting image may not be equal to
+    IMAGE_WIDTH."""
     aspect_ratio = image.width / image.height
-    if aspect_ratio > 3:
-        # Image is wider than 3:1 (e.g. a panorama)
-        desired_width = image.height * 3
+    if aspect_ratio > ASPECT_RATIO:
+        # Image is wider than it should be
+        desired_width = image.height * ASPECT_RATIO
         left = (image.width - desired_width) / 2
         right = left + desired_width
         bottom = image.height
         return image.crop((left, 0, right, bottom))
-    elif aspect_ratio < 3:
-        # Image is narrower than 3:1
-        # Most images will fall into this category
-        desired_height = image.width / 3
+    elif aspect_ratio < ASPECT_RATIO:
+        # Image is narrower than it should be
+        desired_height = image.width / ASPECT_RATIO
         top = (image.height - desired_height) / 2
         bottom = top + desired_height
         right = image.width
         return image.crop((0, top, right, bottom))
     else:
         return image
-        
+
+def random_block(image):
+    """Returns a random index from the image where the x and y values are
+    multiples of BLOCK_SIZE."""
+    columns = math.floor(image.width / BLOCK_SIZE)
+    rows = math.floor(image.height / BLOCK_SIZE)
+    blocks = columns * rows
+    random_block = random.randint(0, blocks - 1)
+    random_column = random_block % columns
+    random_row = math.floor(random_block / columns)
+    return (random_column * BLOCK_SIZE, random_row * BLOCK_SIZE)

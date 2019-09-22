@@ -1,12 +1,11 @@
 from flask import Flask, flash, g, redirect, render_template, request
-from degrade import degrade_text, degrade_jpeg
+from degrade import degrade_text, degrade_jpeg, fake_degrade_jpeg
+from constants import MAX_FILES
 from util import *
 from PIL import Image
 import uuid
 import os
 import sqlite3
-
-MAX_FILES = 20
 
 app = Flask(__name__)
 DATABASE = os.path.join(app.root_path, 'data.db')
@@ -34,13 +33,13 @@ def degrade_database():
     """Degrades all images and text currently in the database."""
     sql_fetch = '''select * from items'''
     items = g.db.cursor().execute(sql_fetch).fetchall()
-    for item in items:
+    for index, item in enumerate(items):
         id = item['id']
         description = item['description']
         old_image_path = os.path.join(UPLOAD_FOLDER, item['filename'])
         new_filename = random_jpeg_filename()
         new_image_path = os.path.join(UPLOAD_FOLDER, new_filename)
-        degrade_jpeg(old_image_path, new_image_path)
+        fake_degrade_jpeg(old_image_path, new_image_path)
         os.remove(old_image_path)
         new_description = degrade_text(description)
         sql_update = '''
