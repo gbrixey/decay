@@ -31,7 +31,7 @@ def ensure_items_table():
 
 def degrade_database():
     """Degrades all images and text currently in the database."""
-    sql_fetch = '''select * from items'''
+    sql_fetch = '''select * from items order by id desc'''
     items = g.db.cursor().execute(sql_fetch).fetchall()
     for index, item in enumerate(items):
         id = item['id']
@@ -39,7 +39,8 @@ def degrade_database():
         old_image_path = os.path.join(UPLOAD_FOLDER, item['filename'])
         new_filename = random_jpeg_filename()
         new_image_path = os.path.join(UPLOAD_FOLDER, new_filename)
-        fake_degrade_jpeg(old_image_path, new_image_path)
+        strong = index >= 10
+        fake_degrade_jpeg(old_image_path, new_image_path, strong = strong)
         os.remove(old_image_path)
         new_description = degrade_text(description)
         sql_update = '''
@@ -58,7 +59,7 @@ def trim_database_if_necessary():
     items = g.db.cursor().execute(sql_fetch).fetchall()
     for (index, item) in enumerate(items):
         if index >= MAX_FILES:
-            id = items['id']
+            id = item['id']
             sql_delete = '''delete from items where id = ?'''
             g.db.cursor().execute(sql_delete, (id,))
     g.db.commit()
@@ -66,7 +67,7 @@ def trim_database_if_necessary():
     
 def random_jpeg_filename():
     """Returns a random filename ending in .jpg"""
-    name = str(uuid.uuid4()).replace('-', '')
+    name = str(uuid.uuid4())[:8]
     return name + '.jpg'
     
 def makedict(cursor, row):

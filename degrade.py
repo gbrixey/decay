@@ -43,7 +43,7 @@ def degrade_jpeg(input_file, output_file):
     with open(output_file, 'wb') as f:
         f.write(output_byte_array)
 
-def fake_degrade_jpeg(input_file, output_file):
+def fake_degrade_jpeg(input_file, output_file, strong = False):
     """Manipulates the image to achieve a similar effect to degrade_jpeg, but without
     corrupting the file."""
     image = jpeg_image_from_file(input_file)
@@ -52,13 +52,15 @@ def fake_degrade_jpeg(input_file, output_file):
     weights = [0.8, 0.2]
     for i in range(iterations):
         option = numpy.random.choice(options, p = weights)
-        image = option(image)
-    image.save(output_file, quality = 50, optimize = True)
+        image = option(image, strong = strong)
+    image.save(output_file, quality = 10, optimize = True)
     
-def fake_adjust_color(image):
+def fake_adjust_color(image, strong = False):
     """Randomly adjusts the RGB values of part of the image."""
     component = random.randint(0, 2)
-    amount = random.randint(20, 40)
+    lower_bound = 30 if strong else 10
+    upper_bound = 80 if strong else 40
+    amount = random.randint(lower_bound, upper_bound)
     start_column, start_row = random_block(image)
     array = numpy.zeros((image.height, image.width, 3), dtype = numpy.uint8)
     array[start_row:(start_row + BLOCK_SIZE), start_column:, component].fill(amount)
@@ -71,11 +73,13 @@ def fake_adjust_color(image):
     else:
         return ImageChops.subtract(image, map_image)
 
-def fake_offset(image):
+def fake_offset(image, strong = False):
     """Randomly moves parts of the image right or left."""
     start_column, start_row = random_block(image)
-    cropped_image = image.crop((0, start_row, image.width, image.height))  
-    offset = random.choice([-1, 1]) * BLOCK_SIZE
+    cropped_image = image.crop((0, start_row, image.width, image.height))
+    offset_multiple = random.randint(5, 15) if strong else 1
+    offset_size = offset_multiple * BLOCK_SIZE
+    offset = random.choice([-1, 1]) * offset_size
     offset_image = ImageChops.offset(cropped_image, offset, 0)
     image.paste(offset_image, (0, start_row))
     return image
@@ -89,8 +93,9 @@ def degrade_text(text):
     The number of errors added depends on the length of the string."""
     iterations = int(len(text) / 8)
     options = [delete_character, delete_character_leaving_space, swap_two_characters, duplicate_character, insert_character_from_text]
+    weights = [0.3, 0.1, 0.2, 0.2, 0.2]
     for _ in range(iterations):
-        option = random.choice(options)
+        option = numpy.random.choice(options, p = weights)
         text = option(text)
     return text
     
