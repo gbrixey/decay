@@ -1,3 +1,4 @@
+import sys
 import math
 import random
 from PIL import Image, ExifTags
@@ -8,7 +9,8 @@ def jpeg_image_from_file(image_file):
     Returns None if the image is not a valid jpeg."""
     try:
         image = Image.open(image_file)
-    except IOError as err:
+    except:
+        err = sys.exc_info()[0]
         print("Error opening image: {0}".format(err))
         return None
     if image.format != 'JPEG':
