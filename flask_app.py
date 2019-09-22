@@ -2,7 +2,7 @@ from flask import Flask, flash, g, redirect, render_template, request
 from degrade import degrade_text, degrade_jpeg
 from util import *
 from PIL import Image
-import random
+import uuid
 import os
 import sqlite3
 
@@ -12,10 +12,6 @@ app = Flask(__name__)
 DATABASE = os.path.join(app.root_path, 'data.db')
 UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'images')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-with open(os.path.join(app.root_path, 'words.txt')) as f:
-    global WORDS
-    WORDS = f.read().split()
 
 def ensure_upload_directory():
     """Creates the image upload directory if necessary."""
@@ -70,8 +66,9 @@ def trim_database_if_necessary():
     return
     
 def random_jpeg_filename():
-    """Returns a jpeg filename using three randomly selected words."""
-    return '_'.join([random.choice(WORDS) for _ in range(3)]) + '.jpg'
+    """Returns a random filename ending in .jpg"""
+    name = str(uuid.uuid4()).replace('-', '')
+    return name + '.jpg'
     
 def makedict(cursor, row):
     return dict((cursor.description[i][0], value) for i, value in enumerate(row))
