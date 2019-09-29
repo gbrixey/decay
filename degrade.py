@@ -91,9 +91,11 @@ def fake_offset(image, strong = False):
 def degrade_text(text):
     """Adds several typographic errors to the given string and returns the result.
     The number of errors added depends on the length of the string."""
-    iterations = int(len(text) / 8)
+    if len(text) < 2:
+        return ''
+    iterations = max(2, int(len(text) / 8))
     options = [delete_character, delete_character_leaving_space, swap_two_characters, duplicate_character, insert_character_from_text]
-    weights = [0.3, 0.1, 0.2, 0.2, 0.2]
+    weights = [0.3, 0.1, 0.2, 0.2, 0.2] if len(text) >= 8 else [0, 0, 0.4, 0.3, 0.3]
     for _ in range(iterations):
         option = numpy.random.choice(options, p = weights)
         text = option(text)
