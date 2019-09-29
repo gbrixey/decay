@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="static/css/decay.css">
     <title>decay theory</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -38,27 +39,17 @@
         </div>
         <div class="intro-form-container">
           <form class="new-image" action="/submit_image" method="post" enctype="multipart/form-data">
-            <textarea class="description" name="description"></textarea>
+            <textarea class="description" id="description" name="description"></textarea>
             <div class="form-input-container">
               <input class="image-form" id="image-input" type="file" name="image" accept=".jpg,.jpeg">
               <label class="image-form" for="image-input">CHOOSE FILE</label>
-              <input class="image-form" type="submit" id="image-submit" value="Submit">
+              <input class="image-form" id="image-submit" type="submit" value="Submit">
               <label class="image-form" for="image-submit">SUBMIT</label>
             </div>
           </form>
         </div>
       </div>
-      {% for item in items %}
-      <div class="content-row" style="background-image: url('static/images/{{ item['filename'] }}')">
-        {% if item['description'] is defined and item['description']|length > 0 %}
-        <div class="row-description-container">
-          <p class="description">
-            {{ item['description'] }}
-          </p>
-        </div>
-        {% endif %}
-      </div>
-      {% endfor %}
+      <div id="content-container"></div>
     </div>
     <script src="static/script.js"></script>
   </body>

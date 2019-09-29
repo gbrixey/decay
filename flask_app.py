@@ -1,5 +1,5 @@
 from flask import Flask, flash, g, redirect, render_template, request
-from degrade import degrade_text, degrade_jpeg, fake_degrade_jpeg
+from degrade import degrade_text, fake_degrade_jpeg
 from constants import MAX_FILES
 from util import *
 from PIL import Image
@@ -84,11 +84,14 @@ def after_request(response):
     return response
     
 @app.route('/')
-def main_page():
-    # Get image names and descriptions from database
+def index():
+    return render_template('index.html')
+
+@app.route('/content')
+def get_content():
     sql_fetch = '''select * from items order by id desc'''
     items = g.db.cursor().execute(sql_fetch).fetchall()
-    return render_template('index.html', items = items)
+    return render_template('content.html', items = items)
 
 @app.route('/submit_image', methods=['POST'])
 def submit_image():
