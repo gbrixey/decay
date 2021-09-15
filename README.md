@@ -1,2 +1,5 @@
-# decay
-Web app in which uploaded images and text decay over time.
+# decay theory
+A web app in which uploading images and text causes the previously uploaded content to gradually deteriorate. The text is scrambled by adding, deleting, and moving characters, and the images are altered in a way that mimics the appearance of corrupted JPEGs. Eventually the text and images become almost completely incomprehensible, like memories fading over time.
+
+----
+![screenshot](composite_screenshot.png)
